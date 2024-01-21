@@ -60,7 +60,7 @@ class ClockPainter extends CustomPainter {
     var circleBorderBrush = Paint()
       ..color = themeProvider.strokeColor!
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 8
+      ..strokeWidth = 6
       ..style = PaintingStyle.stroke;
 
     var centerDotBrush = Paint()..color = themeProvider.strokeColor!;
@@ -92,10 +92,11 @@ class ClockPainter extends CustomPainter {
       ..strokeWidth = 4;
 
     var textStyle = TextStyle(
-      color: themeProvider.strokeColor,
-      fontWeight: FontWeight.bold,
-      fontSize: 30,
-    );
+        color: themeProvider.strokeColor,
+        fontWeight: FontWeight.bold,
+        fontSize: themeProvider.isLargeScreen! ? 60 : 30,
+        fontStyle: FontStyle.italic,
+        fontFamily: 'Montserrat');
 
     drawDial(canvas, center, radius, 12, dialPaint, textStyle);
     drawDial(canvas, center, radius, 3, dialPaint, textStyle);
@@ -142,28 +143,48 @@ class ClockPainter extends CustomPainter {
 
     switch (hour) {
       case 12:
-        textPosition = Offset(
-          dialEnd.dx - textPainter.width / 2,
-          dialEnd.dy + dialTextDistance - 5,
-        );
+        textPosition = themeProvider.isLargeScreen!
+            ? Offset(
+                dialEnd.dx - textPainter.width / 2 + dialTextDistance - 20,
+                dialEnd.dy - textPainter.height / 2 + 50,
+              )
+            : Offset(
+                dialEnd.dx - textPainter.width / 2,
+                dialEnd.dy + dialTextDistance - 5,
+              );
         break;
       case 3:
-        textPosition = Offset(
-          dialEnd.dx - textPainter.width / 2 - dialTextDistance - 10,
-          dialEnd.dy - textPainter.height / 2,
-        );
+        textPosition = themeProvider.isLargeScreen!
+            ? Offset(
+                dialEnd.dx - textPainter.width / 2 + dialTextDistance - 60,
+                dialEnd.dy - textPainter.height / 2,
+              )
+            : Offset(
+                dialEnd.dx - textPainter.width / 2 - dialTextDistance - 10,
+                dialEnd.dy - textPainter.height / 2,
+              );
         break;
       case 6:
-        textPosition = Offset(
-          dialEnd.dx - textPainter.width / 2,
-          dialEnd.dy - dialLength - dialLength - 20,
-        );
+        textPosition = themeProvider.isLargeScreen!
+            ? Offset(
+                dialEnd.dx - textPainter.width / 2 + dialTextDistance - 20,
+                dialEnd.dy - textPainter.height / 2 - 60,
+              )
+            : Offset(
+                dialEnd.dx - textPainter.width / 2,
+                dialEnd.dy - dialLength - dialLength - 20,
+              );
         break;
       case 9:
-        textPosition = Offset(
-          dialEnd.dx - textPainter.width / 2 + dialTextDistance + 10,
-          dialEnd.dy - textPainter.height / 2,
-        );
+        textPosition = themeProvider.isLargeScreen!
+            ? Offset(
+                dialEnd.dx - textPainter.width / 2 + dialTextDistance + 20,
+                dialEnd.dy - textPainter.height / 2,
+              )
+            : Offset(
+                dialEnd.dx - textPainter.width / 2 + dialTextDistance + 10,
+                dialEnd.dy - textPainter.height / 2,
+              );
         break;
       default:
         textPosition = const Offset(0, 0);

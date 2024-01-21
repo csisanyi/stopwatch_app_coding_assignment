@@ -87,7 +87,7 @@ void main() {
     expect(start, findsOneWidget);
     expect(reset, findsOneWidget);
     expect(pause, findsOneWidget);
-    expect(lap, findsNothing);
+    expect(lap, findsOneWidget);
     expect(clear, findsOneWidget);
     expect(startTime, findsOneWidget);
     expect(increasedTime, findsNothing);
@@ -106,7 +106,7 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(startTime, findsNothing);
-    expect(lap, findsNothing);
+    expect(lap, findsOneWidget);
     expect(increasedTime, findsAtLeastNWidgets(2));
     expect(lap1, findsOneWidget);
     expect(lap2, findsNothing);

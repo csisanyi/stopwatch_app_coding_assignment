@@ -8,25 +8,29 @@ import 'analogue_clock.dart';
 class PortraitView extends StatelessWidget {
   const PortraitView({super.key});
 
+
   final double verticalDividerHeight = 10;
 
   @override
   Widget build(BuildContext context) {
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
 
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        AnalogueClock(
-            height: MediaQuery.of(context).size.height / 3,
-            width: MediaQuery.of(context).size.width),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: AnalogueClock(
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width),
+        ),
         SizedBox(height: verticalDividerHeight),
         Consumer<DataProvider>(
           builder: (context, timerProvider, _) {
             return Text(
               timerProvider.formattedTime,
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             );
           },
         ),
@@ -42,7 +46,7 @@ class PortraitView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.play_arrow),
-                  Text('Start'),
+                  Text("Start"),
                 ],
               ),
             ),
@@ -76,27 +80,43 @@ class PortraitView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Consumer<DataProvider>(
-                builder: (context, dataProvider, _) {
-                  return Visibility(
-                    visible: dataProvider.running,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dataProvider.addItemToList();
-                      },
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.flag),
-                          Text('Lap'),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            Expanded(child: Consumer<DataProvider>(
+              builder: (context, dataProvider, _) {
+                return dataProvider.running
+                    ? ElevatedButton(
+                        onPressed: () {
+                          dataProvider.addItemToList();
+                        },
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.flag),
+                            Text('Lap'),
+                          ],
+                        ),
+                      )
+                    : ElevatedButton(
+                        onPressed: () {},
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.flag,
+                              color: Colors.grey, // Set the desired color
+                            ),
+                            Text(
+                              'Lap',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  decoration: TextDecoration
+                                      .lineThrough // Set the desired color
+                                  ),
+                            ),
+                          ],
+                        ),
+                      );
+              },
+            )),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
@@ -130,7 +150,8 @@ class PortraitView extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
-                                color: Provider.of<ThemeProvider>(context).dividerColor!,
+                                color: Provider.of<ThemeProvider>(context)
+                                    .dividerColor!,
                                 // Border color
                                 width: 2.0, // Border width
                               ),

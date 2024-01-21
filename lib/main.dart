@@ -20,6 +20,13 @@ class StopWatchApp extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
+
+          final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+          final mediaQuery = MediaQuery.of(context);
+          final isLargeScreen = (mediaQuery.orientation == Orientation.portrait && mediaQuery.size.width > 650) ||
+              (mediaQuery.orientation == Orientation.landscape && mediaQuery.size.height > 650);
+          themeProvider.setLargeScreen = isLargeScreen;
+
           return MaterialApp(
             theme: Provider.of<ThemeProvider>(context).getTheme(),
             home: const UserInterface(),

@@ -20,22 +20,19 @@ class LandscapeView extends StatelessWidget {
       children: [
         Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: AnalogueClock(
-                height: MediaQuery.of(context).size.height / 1.7,
-                width: MediaQuery.of(context).size.width / 2,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                child: AnalogueClock(
+                  height: MediaQuery.of(context).size.height / 1.7,
+                  width: MediaQuery.of(context).size.width / 2,
+                ),
               ),
-            ),
-            SizedBox(
-              height: verticalDividerHeight,
             ),
             Consumer<DataProvider>(
               builder: (context, timerProvider, _) {
                 return Text(
                   timerProvider.formattedTime,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
                 );
               },
             ),
@@ -93,26 +90,43 @@ class LandscapeView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Consumer<DataProvider>(
-                      builder: (context, dataProvider, _) {
-                        return dataProvider.running
-                            ? ElevatedButton(
-                          onPressed: () {
-                            dataProvider.addItemToList();
-                          },
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.flag),
-                              Text('Lap'),
-                            ],
-                          ),
-                        )
-                            : const SizedBox(); // Replace SizedBox() with any other widget based on your needs
-                      },
-                    )
-                  ),
+                  Expanded(child: Consumer<DataProvider>(
+                    builder: (context, dataProvider, _) {
+                      return dataProvider.running
+                          ? ElevatedButton(
+                              onPressed: () {
+                                dataProvider.addItemToList();
+                              },
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.flag),
+                                  Text('Lap'),
+                                ],
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {},
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.flag,
+                                    color: Colors.grey, // Set the desired color
+                                  ),
+                                  Text(
+                                    'Lap',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        decoration: TextDecoration
+                                            .lineThrough // Set the desired color
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            );
+                    },
+                  )),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -132,30 +146,34 @@ class LandscapeView extends StatelessWidget {
               Consumer<DataProvider>(
                 builder: (context, timerProvider, child) {
                   return Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children:
-                            timerProvider.items.asMap().entries.map((entry) {
-                          int index = entry.key;
-                          String item = entry.value;
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children:
+                              timerProvider.items.asMap().entries.map((entry) {
+                            int index = entry.key;
+                            String item = entry.value;
 
-                          return Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Provider.of<ThemeProvider>(context).dividerColor!,
-                                  width: 2.0, // Border width
+                            return Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Provider.of<ThemeProvider>(context)
+                                        .dividerColor!,
+                                    width: 2.0, // Border width
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: ListTile(
-                              leading: Text(
-                                  'Lap ${dataProvider.items.length - index}'),
-                              trailing: Text(item),
-                            ),
-                          );
-                        }).toList(),
+                              child: ListTile(
+                                leading: Text(
+                                    'Lap ${dataProvider.items.length - index}'),
+                                trailing: Text(item),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   );
