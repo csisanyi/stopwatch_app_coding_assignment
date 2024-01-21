@@ -94,18 +94,24 @@ class LandscapeView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dataProvider.addItemToList();
+                    child: Consumer<DataProvider>(
+                      builder: (context, dataProvider, _) {
+                        return dataProvider.running
+                            ? ElevatedButton(
+                          onPressed: () {
+                            dataProvider.addItemToList();
+                          },
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.flag),
+                              Text('Lap'),
+                            ],
+                          ),
+                        )
+                            : const SizedBox(); // Replace SizedBox() with any other widget based on your needs
                       },
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.flag),
-                          Text('Lap'),
-                        ],
-                      ),
-                    ),
+                    )
                   ),
                   Expanded(
                     child: ElevatedButton(

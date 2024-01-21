@@ -74,30 +74,41 @@ class PortraitView extends StatelessWidget {
         ),
         SizedBox(height: verticalDividerHeight),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                dataProvider.addItemToList();
-              },
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.flag),
-                  Text('Lap'),
-                ],
+            Expanded(
+              child: Consumer<DataProvider>(
+                builder: (context, dataProvider, _) {
+                  return Visibility(
+                    visible: dataProvider.running,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        dataProvider.addItemToList();
+                      },
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.flag),
+                          Text('Lap'),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                dataProvider.clearList();
-              },
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.clear),
-                  Text('Clear'),
-                ],
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  dataProvider.clearList();
+                },
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.clear),
+                    Text('Clear'),
+                  ],
+                ),
               ),
             ),
           ],

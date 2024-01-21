@@ -16,6 +16,7 @@ class DataProvider extends ChangeNotifier {
 
   int get milliseconds => _milliseconds;
   List<String> get items => _items;
+  bool get running => _running;
 
   void startTimer() {
     if (!_running) {
@@ -42,6 +43,7 @@ class DataProvider extends ChangeNotifier {
     _timer.cancel();
     _running = false;
     _lapsCleared = false;
+    notifyListeners();
   }
 
   void resetTimer() {
