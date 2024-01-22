@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopwatch/components/action_row.dart';
 import 'package:stopwatch/components/lap_button_row.dart';
-import 'package:stopwatch/components/lap_tile.dart';
+import 'package:stopwatch/components/lap_list.dart';
 import 'package:stopwatch/components/timer.dart';
 
 import '../provider/data_provider.dart';
-import '../provider/theme_provider.dart';
 import 'analogue_clock.dart';
 
 class PortraitView extends StatelessWidget {
@@ -41,27 +40,7 @@ class PortraitView extends StatelessWidget {
               height: MediaQuery.of(context).size.height / 3 - 60,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 35),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: timerProvider.items.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      String item = entry.value;
-
-                      return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Provider.of<ThemeProvider>(context)
-                                    .dividerColor!,
-                                // Border color
-                                width: 2.0, // Border width
-                              ),
-                            ),
-                          ),
-                          child: LapTile(dataProvider: dataProvider, index: index, item: item));
-                    }).toList(),
-                  ),
-                ),
+                child: LapList(dataProvider: dataProvider, consumerDataProvider: timerProvider, containerWidth: double.infinity,),
               ),
             );
           },

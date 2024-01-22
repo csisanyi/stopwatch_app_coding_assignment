@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopwatch/components/action_row.dart';
 import 'package:stopwatch/components/lap_button_row.dart';
-import 'package:stopwatch/components/lap_tile.dart';
+import 'package:stopwatch/components/lap_list.dart';
 import 'package:stopwatch/components/timer.dart';
 
 import '../provider/data_provider.dart';
-import '../provider/theme_provider.dart';
 import 'analogue_clock.dart';
 
 class LandscapeView extends StatelessWidget {
   const LandscapeView({super.key});
-
-  final double verticalDividerHeight = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -46,29 +43,7 @@ class LandscapeView extends StatelessWidget {
                   return Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children:
-                              timerProvider.items.asMap().entries.map((entry) {
-                            int index = entry.key;
-                            String item = entry.value;
-
-                            return Container(
-                              width: MediaQuery.of(context).size.width / 3,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Provider.of<ThemeProvider>(context)
-                                        .dividerColor!,
-                                    width: 2.0, // Border width
-                                  ),
-                                ),
-                              ),
-                              child: LapTile(dataProvider: dataProvider, index: index, item: item),
-                            );
-                          }).toList(),
-                        ),
-                      ),
+                      child: LapList(dataProvider: dataProvider,consumerDataProvider: timerProvider, containerWidth: MediaQuery.of(context).size.width / 3,),
                     ),
                   );
                 },
