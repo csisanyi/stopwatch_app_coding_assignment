@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stopwatch/components/action_row.dart';
+import 'package:stopwatch/components/lap_button_row.dart';
 
 import '../provider/data_provider.dart';
 import '../provider/theme_provider.dart';
@@ -41,108 +43,8 @@ class LandscapeView extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dataProvider.startTimer();
-                      },
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.play_arrow),
-                          Text('Start'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dataProvider.pauseTimer();
-                      },
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.pause),
-                          Text('Pause'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dataProvider.resetTimer();
-                      },
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.refresh),
-                          Text('Reset'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(child: Consumer<DataProvider>(
-                    builder: (context, dataProvider, _) {
-                      return dataProvider.running
-                          ? ElevatedButton(
-                              onPressed: () {
-                                dataProvider.addItemToList();
-                              },
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.flag),
-                                  Text('Lap'),
-                                ],
-                              ),
-                            )
-                          : ElevatedButton(
-                              onPressed: () {},
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.flag,
-                                    color: Colors.grey, // Set the desired color
-                                  ),
-                                  Text(
-                                    'Lap',
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        decoration: TextDecoration
-                                            .lineThrough // Set the desired color
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            );
-                    },
-                  )),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dataProvider.clearList();
-                      },
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.clear),
-                          Text('Clear'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              ActionRow(dataProvider: dataProvider),
+              LapButtonRow(dataProvider: dataProvider),
               Consumer<DataProvider>(
                 builder: (context, timerProvider, child) {
                   return Expanded(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stopwatch/components/action_row.dart';
+import 'package:stopwatch/components/lap_button_row.dart';
 
 import '../provider/data_provider.dart';
 import '../provider/theme_provider.dart';
@@ -8,13 +10,11 @@ import 'analogue_clock.dart';
 class PortraitView extends StatelessWidget {
   const PortraitView({super.key});
 
-
   final double verticalDividerHeight = 10;
 
   @override
   Widget build(BuildContext context) {
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
-
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,104 +35,9 @@ class PortraitView extends StatelessWidget {
           },
         ),
         SizedBox(height: verticalDividerHeight),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                dataProvider.startTimer();
-              },
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.play_arrow),
-                  Text("Start"),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                dataProvider.pauseTimer();
-              },
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.pause),
-                  Text('Pause'),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                dataProvider.resetTimer();
-              },
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.refresh),
-                  Text('Reset'),
-                ],
-              ),
-            ),
-          ],
-        ),
+        ActionRow(dataProvider: dataProvider),
         SizedBox(height: verticalDividerHeight),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(child: Consumer<DataProvider>(
-              builder: (context, dataProvider, _) {
-                return dataProvider.running
-                    ? ElevatedButton(
-                        onPressed: () {
-                          dataProvider.addItemToList();
-                        },
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.flag),
-                            Text('Lap'),
-                          ],
-                        ),
-                      )
-                    : ElevatedButton(
-                        onPressed: () {},
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.flag,
-                              color: Colors.grey, // Set the desired color
-                            ),
-                            Text(
-                              'Lap',
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  decoration: TextDecoration
-                                      .lineThrough // Set the desired color
-                                  ),
-                            ),
-                          ],
-                        ),
-                      );
-              },
-            )),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  dataProvider.clearList();
-                },
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.clear),
-                    Text('Clear'),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+        LapButtonRow(dataProvider: dataProvider),
         SizedBox(height: verticalDividerHeight),
         Consumer<DataProvider>(
           builder: (context, timerProvider, child) {
