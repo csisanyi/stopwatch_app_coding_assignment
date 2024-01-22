@@ -5,22 +5,25 @@ import 'package:stopwatch/view/portrait_view.dart';
 import '../provider/theme_provider.dart';
 
 class UserInterface extends StatelessWidget {
+
   const UserInterface({super.key});
 
   @override
   Widget build(BuildContext context) {
 
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Stopwatch'),
           actions: [
-            ElevatedButton(
-              onPressed: () {
-                themeProvider.toggleTheme();
-              },
-              child: themeProvider.getThemeIcon(),
+            Consumer<ThemeProvider>(
+            builder: (context, provider, _) {
+              return ElevatedButton(
+                onPressed: () {
+                  provider.toggleTheme();
+                },
+                child: provider.getThemeIcon(),
+              );
+            }
             )
           ],
         ),
