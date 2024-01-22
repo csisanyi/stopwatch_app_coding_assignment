@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stopwatch/components/action_row.dart';
 import 'package:stopwatch/components/lap_button_row.dart';
+import 'package:stopwatch/components/lap_tile.dart';
+import 'package:stopwatch/components/timer.dart';
 
 import '../provider/data_provider.dart';
 import '../provider/theme_provider.dart';
@@ -31,13 +33,7 @@ class LandscapeView extends StatelessWidget {
                 ),
               ),
             ),
-            Consumer<DataProvider>(
-              builder: (context, timerProvider, _) {
-                return Text(
-                  timerProvider.formattedTime,
-                );
-              },
-            ),
+            Timer(dataProvider: dataProvider)
           ],
         ),
         Expanded(
@@ -68,11 +64,7 @@ class LandscapeView extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              child: ListTile(
-                                leading: Text(
-                                    'Lap ${dataProvider.items.length - index}'),
-                                trailing: Text(item),
-                              ),
+                              child: LapTile(dataProvider: dataProvider, index: index, item: item),
                             );
                           }).toList(),
                         ),
