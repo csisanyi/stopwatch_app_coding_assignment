@@ -7,6 +7,7 @@ class DataProvider extends ChangeNotifier {
   late Duration lapDuration;
   int _milliseconds = 0;
   int _lapMilliseconds = 0;
+  int clocked = 0;
   int hours = 0;
   int minutes = 0;
   int seconds = 0;
@@ -23,28 +24,21 @@ class DataProvider extends ChangeNotifier {
     stopwatch.start();
     _timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
       _milliseconds = stopwatch.elapsed.inMilliseconds;
-      _lapMilliseconds++;
+      _lapMilliseconds = milliseconds - clocked;
       formattedTime = formatTime(_milliseconds);
       formattedLapTime = formatTime(_lapMilliseconds);
       fullDuration = Duration(milliseconds: milliseconds);
       hours = fullDuration.inHours;
       minutes = fullDuration.inMinutes % 60;
       seconds = fullDuration.inSeconds % 60;
-      items.isEmpty
-          ? items.add(formattedLapTime)
-          : items[0] = formattedLapTime;
       _lapsCleared
           ? ""
           : items.isEmpty
-          ? items.add(formattedLapTime)
-          : items[0] = formattedLapTime;
+              ? items.add(formattedLapTime)
+              : items[0] = formattedLapTime;
       notifyListeners();
     });
   }
-
-
-
-
 
   /*void startTimer() {
     if (!_running) {
@@ -69,25 +63,27 @@ class DataProvider extends ChangeNotifier {
 
   void pauseTimer() {
     _timer.cancel();
+    stopwatch.stop();
     _lapsCleared = false;
   }
 
   void resetTimer() {
-    if(stopwatch.isRunning) {
-      _timer.cancel();
-    }
+    _timer.cancel();
+    stopwatch.stop();
+    stopwatch.reset();
     _milliseconds = 0;
+    formattedTime = formatTime(_milliseconds);
+    clocked = 0;
     hours = 0;
     minutes = 0;
     seconds = 0;
     _items.clear();
-    _lapsCleared = false;
     notifyListeners();
   }
 
   void addItemToList() {
+    clocked += stopwatch.elapsed.inMilliseconds;
     _items.insert(0, formattedLapTime);
-    _lapMilliseconds = 0;
     _lapsCleared = false;
     notifyListeners();
   }
@@ -95,7 +91,6 @@ class DataProvider extends ChangeNotifier {
   void clearList() {
     _items.clear();
     _lapsCleared = true;
-    _lapMilliseconds = 0;
     notifyListeners();
   }
 
@@ -116,5 +111,4 @@ class DataProvider extends ChangeNotifier {
 
     return '$hoursStr:$minutesStr:$secondsStr.$millisecondsStr';
   }
-
 }
