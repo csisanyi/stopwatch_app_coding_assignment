@@ -29,7 +29,7 @@ class UserInterface extends StatelessWidget {
         ),
         body: OrientationBuilder(builder: (context, orientation) {
           return orientation == Orientation.portrait
-              ? const PortraitView()
+              ? PortraitView(portraitHeight: MediaQuery.of(context).size.height)
               : const LandscapeView();
         }));
   }
