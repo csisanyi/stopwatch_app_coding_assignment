@@ -10,15 +10,43 @@ class DataProvider extends ChangeNotifier {
   int hours = 0;
   int minutes = 0;
   int seconds = 0;
-  bool _running = false;
   bool _lapsCleared = false;
   final List<String> _items = [];
+  Stopwatch stopwatch = Stopwatch();
+  String formattedTime = "00:00:00.0";
+  String formattedLapTime = "00:00:00.0";
 
   int get milliseconds => _milliseconds;
   List<String> get items => _items;
-  bool get running => _running;
 
   void startTimer() {
+    stopwatch.start();
+    _timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+      _milliseconds = stopwatch.elapsed.inMilliseconds;
+      _lapMilliseconds++;
+      formattedTime = formatTime(_milliseconds);
+      formattedLapTime = formatTime(_lapMilliseconds);
+      fullDuration = Duration(milliseconds: milliseconds);
+      hours = fullDuration.inHours;
+      minutes = fullDuration.inMinutes % 60;
+      seconds = fullDuration.inSeconds % 60;
+      items.isEmpty
+          ? items.add(formattedLapTime)
+          : items[0] = formattedLapTime;
+      _lapsCleared
+          ? ""
+          : items.isEmpty
+          ? items.add(formattedLapTime)
+          : items[0] = formattedLapTime;
+      notifyListeners();
+    });
+  }
+
+
+
+
+
+  /*void startTimer() {
     if (!_running) {
       _running = true;
       _lapsCleared = false;
@@ -37,23 +65,22 @@ class DataProvider extends ChangeNotifier {
         notifyListeners();
       });
     }
-  }
+  }*/
 
   void pauseTimer() {
     _timer.cancel();
-    _running = false;
     _lapsCleared = false;
-    notifyListeners();
   }
 
   void resetTimer() {
-    _timer.cancel();
+    if(stopwatch.isRunning) {
+      _timer.cancel();
+    }
     _milliseconds = 0;
     hours = 0;
     minutes = 0;
     seconds = 0;
     _items.clear();
-    _running = false;
     _lapsCleared = false;
     notifyListeners();
   }
@@ -72,11 +99,11 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get formattedTime {
+  String get getFormattedTime {
     return formatTime(_milliseconds);
   }
 
-  String get formattedLapTime {
+  String get getFormattedLapTime {
     return formatTime(_lapMilliseconds);
   }
 
@@ -89,4 +116,5 @@ class DataProvider extends ChangeNotifier {
 
     return '$hoursStr:$minutesStr:$secondsStr.$millisecondsStr';
   }
+
 }

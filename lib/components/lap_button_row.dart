@@ -14,7 +14,7 @@ class LapButtonRow extends StatelessWidget {
       Expanded(
         child: Consumer<DataProvider>(
           builder: (context, dataProvider, _) {
-            return dataProvider.running
+            return dataProvider.stopwatch.isRunning
                 ? ElevatedButton(
                     onPressed: () {
                       dataProvider.addItemToList();
