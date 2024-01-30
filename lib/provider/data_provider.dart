@@ -22,7 +22,7 @@ class DataProvider extends ChangeNotifier {
 
   void startTimer() {
     stopwatch.start();
-    _timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       _milliseconds = stopwatch.elapsed.inMilliseconds;
       _lapMilliseconds = milliseconds - clocked;
       formattedTime = formatTime(_milliseconds);
