@@ -9,9 +9,10 @@ import '../provider/data_provider.dart';
 import 'analogue_clock.dart';
 
 class PortraitView extends StatelessWidget {
-  const PortraitView({super.key});
+  const PortraitView({super.key, this.portraitHeight});
 
   final double verticalDividerHeight = 10;
+  final portraitHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class PortraitView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: AnalogueClock(
-              height: MediaQuery.of(context).size.height / 3,
+              height: portraitHeight / 3,
               width: MediaQuery.of(context).size.width),
         ),
         SizedBox(height: verticalDividerHeight),
@@ -37,7 +38,7 @@ class PortraitView extends StatelessWidget {
         Consumer<DataProvider>(
           builder: (context, timerProvider, child) {
             return SizedBox(
-              height: MediaQuery.of(context).size.height / 3 - 60,
+              height: portraitHeight > 60 ? portraitHeight / 3 - 60 : portraitHeight / 3,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 35),
                 child: LapList(dataProvider: dataProvider, consumerDataProvider: timerProvider, containerWidth: double.infinity,),

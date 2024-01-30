@@ -22,7 +22,7 @@ class DataProvider extends ChangeNotifier {
 
   void startTimer() {
     stopwatch.start();
-    _timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       _milliseconds = stopwatch.elapsed.inMilliseconds;
       _lapMilliseconds = milliseconds - clocked;
       formattedTime = formatTime(_milliseconds);
@@ -40,26 +40,6 @@ class DataProvider extends ChangeNotifier {
     });
   }
 
-  /*void startTimer() {
-    if (!_running) {
-      _running = true;
-      _lapsCleared = false;
-      _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-        _milliseconds += 100;
-        !_lapsCleared ? _lapMilliseconds += 100 : "";
-        fullDuration = Duration(milliseconds: _milliseconds);
-        hours = fullDuration.inHours;
-        minutes = fullDuration.inMinutes % 60;
-        seconds = fullDuration.inSeconds % 60;
-        _lapsCleared
-            ? ""
-            : items.isEmpty
-                ? items.add(formattedLapTime)
-                : _items[0] = formattedLapTime;
-        notifyListeners();
-      });
-    }
-  }*/
 
   void pauseTimer() {
     _timer.cancel();
